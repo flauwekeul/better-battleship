@@ -50,7 +50,15 @@ const Tile = ({
   };
 
   const onTileClickInternal = () => {
-    var damagedTile = document.getElementById(tileId);
+    explodeTile();
+    onTileClick(position);
+  };
+
+  const isShipShown =
+    !!ship && (!proposedShip || (!!proposedShip && !isShipMoveableHere));
+
+  const explodeTile = () => {
+    const damagedTile = document.getElementById(tileId);
     const explosionEffect: HTMLSpanElement = document.createElement("span");
     explosionEffect.innerHTML = '<span class="explosion"></span>';
     setTimeout(() => {
@@ -59,12 +67,7 @@ const Tile = ({
     setTimeout(() => {
       damagedTile?.removeChild(explosionEffect);
     }, 1300);
-
-    onTileClick(position);
   };
-
-  const isShipShown =
-    !!ship && (!proposedShip || (!!proposedShip && !isShipMoveableHere));
 
   return (
     <div key={`x${x}y${y}`}>
