@@ -1,12 +1,14 @@
-import { Coordinates, Ship } from './entities'
+import { Position, Ship } from './entities'
 
 export type Fire = {
   type: 'fire'
-  coordinates: Coordinates
+  position: Position
 }
 
-export type Move<T extends Ship> = {
+export type Move<T extends Ship = Ship> = {
   type: 'move'
   ship: T
-  coordinates: T['coordinates']
+  positions: T['positions']
 }
+
+export type Action = Fire | Move
