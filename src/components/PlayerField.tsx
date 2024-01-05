@@ -1,22 +1,18 @@
 import { useMemo } from "react";
 import clsx from "clsx";
+import { Coordinates, PatrolBoat, PlayerId, Ship } from "../types/entities";
 
 type Props = {
-  playerName: string;
+  playerId: PlayerId;
 };
 
-type Coordinate = {
-  x: number;
-  y: number;
-};
-
-const createGrid = (x: number, y: number): Array<Array<Coordinate>> => {
+const createGrid = (x: number, y: number): Array<Array<Coordinates>> => {
   const grid = [];
 
   for (let i = 0; i < y; i++) {
-    const row = new Array<Coordinate>();
+    const row = new Array<Coordinates>();
     for (let j = 0; j < x; j++) {
-      row.push({ x: j, y: i } as Coordinate);
+      row.push({ x: j, y: i } as Coordinates);
     }
     grid.push(row);
   }
@@ -24,13 +20,49 @@ const createGrid = (x: number, y: number): Array<Array<Coordinate>> => {
   return grid;
 };
 
-const PlayerField = ({ playerName }: Props) => {
+const isShipAtPosition = (
+  x: number,
+  y: number,
+  ships: Ship[]
+): { hasShip: boolean; ship?: Ship } => {
+  const ship = ships.find((ship) => {
+    return ship.coordinates.find((coordinate) => {
+      return coordinate.x === x && coordinate.y === y;
+    });
+  });
+
+  return ship ? { hasShip: true, ship } : { hasShip: false };
+};
+
+const PlayerField = ({ playerId }: Props) => {
   const grid = useMemo(() => {
     return createGrid(10, 10);
   }, []);
 
+  const ships = useMemo(() => {
+    if (playerId !== "player1") {
+      return [];
+    }
+    return [
+      {
+        coordinates: [
+          { x: 1, y: 1 } as Coordinates,
+          { x: 1, y: 2 } as Coordinates,
+        ] as PatrolBoat["coordinates"],
+        hitPoints: 2,
+      },
+      {
+        coordinates: [
+          { x: 5, y: 4 } as Coordinates,
+          { x: 6, y: 4 } as Coordinates,
+        ] as PatrolBoat["coordinates"],
+        hitPoints: 2,
+      },
+    ];
+  }, [playerId]);
+
   const onGridClick = (x: number, y: number) => {
-    console.log("onGridClick", x, y, playerName);
+    console.log("onGridClick", x, y, playerId);
   };
 
   return (
@@ -50,6 +82,9 @@ const PlayerField = ({ playerName }: Props) => {
                 )}
                 onClick={() => onGridClick(x, y)}
               >
+                {isShipAtPosition(x, y, ships).hasShip && (
+                  <div className="absolute w-full h-full bg-gray-400">ship</div>
+                )}
                 <span className="pointer-events-none hidden absolute text-xs">
                   {x}, {y}
                 </span>
