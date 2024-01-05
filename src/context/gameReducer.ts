@@ -7,7 +7,7 @@ export const gameReducer = (state: Game, action: Action) => {
       return {
         ...state,
         currentInteractiveShip: action.ship,
-        proposedShip: action.ship === null ? null : state.proposedShip,
+        proposedShip: null,
       };
 
     case "setProposedShip":
