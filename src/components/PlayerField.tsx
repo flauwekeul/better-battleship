@@ -1,18 +1,18 @@
 import { useMemo } from "react";
 import clsx from "clsx";
-import { Coordinates, PatrolBoat, PlayerId, Ship } from "../types/entities";
+import { Position, PatrolBoat, PlayerId, Ship } from "../types/entities";
 
 type Props = {
   playerId: PlayerId;
 };
 
-const createGrid = (x: number, y: number): Array<Array<Coordinates>> => {
+const createGrid = (x: number, y: number): Array<Array<Position>> => {
   const grid = [];
 
   for (let i = 0; i < y; i++) {
-    const row = new Array<Coordinates>();
+    const row = new Array<Position>();
     for (let j = 0; j < x; j++) {
-      row.push({ x: j, y: i } as Coordinates);
+      row.push({ x: j, y: i } as Position);
     }
     grid.push(row);
   }
@@ -26,7 +26,7 @@ const isShipAtPosition = (
   ships: Ship[]
 ): { hasShip: boolean; ship?: Ship } => {
   const ship = ships.find((ship) => {
-    return ship.coordinates.find((coordinate) => {
+    return ship.positions.find((coordinate) => {
       return coordinate.x === x && coordinate.y === y;
     });
   });
@@ -45,19 +45,21 @@ const PlayerField = ({ playerId }: Props) => {
     }
     return [
       {
-        coordinates: [
-          { x: 1, y: 1 } as Coordinates,
-          { x: 1, y: 2 } as Coordinates,
-        ] as PatrolBoat["coordinates"],
+        positions: [
+          { x: 1, y: 1 },
+          { x: 1, y: 2 },
+        ],
         hitPoints: 2,
-      },
+        type: "patrolBoat",
+      } as PatrolBoat,
       {
-        coordinates: [
-          { x: 5, y: 4 } as Coordinates,
-          { x: 6, y: 4 } as Coordinates,
-        ] as PatrolBoat["coordinates"],
+        positions: [
+          { x: 5, y: 4 },
+          { x: 6, y: 4 },
+        ],
         hitPoints: 2,
-      },
+        type: "patrolBoat",
+      } as PatrolBoat,
     ];
   }, [playerId]);
 
