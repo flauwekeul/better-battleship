@@ -15,8 +15,8 @@
       rgba(255, 0, 0, 0.7) 30%, transparent 50%),
     radial-gradient(transparent 20%, rgba(255, 255, 0, 0.9) 40%,
       rgba(255, 255, 0, 0.7) 50%, transparent 60%),
-    radial-gradient(transparent 30%, rgba(255, 255, 255, 0.9) 60%,
-      rgba(255, 255, 255, 0.7) 70%, transparent 80%);
+    radial-gradient(transparent 30%, rgba(255, 255, 255, 0.9) 50%,
+      rgba(255, 255, 255, 0.7) 60%, transparent 70%);
   background-size: 0 0, 0 0, 0 0;
   background-position: center;
   background-repeat: no-repeat;
