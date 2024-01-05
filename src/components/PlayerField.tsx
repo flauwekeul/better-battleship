@@ -69,6 +69,7 @@ const PlayerField = ({ playerId, isCurrentPlayer }: Props) => {
         }
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [proposedShip, currentInteractiveShip, player.ships]
   );
 
