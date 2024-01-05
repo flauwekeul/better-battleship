@@ -4,6 +4,7 @@ import clsx from "clsx";
 import { getShipAtPosition } from "../domain/functions";
 
 const Tile = ({
+  tileId,
   position,
   onTileClick,
   onShipClick,
@@ -12,6 +13,7 @@ const Tile = ({
   isShipMoveableHere,
   isProposedShipHere,
 }: {
+  tileId: string,
   player: Player;
   position: Position;
   onTileClick: (position: Position) => void;
@@ -32,6 +34,15 @@ const Tile = ({
     event.stopPropagation();
 
     console.log("ship clicked!");
+    var damagedTile = document.getElementById(tileId);
+    const explosionEffect: HTMLSpanElement = document.createElement("span");
+    explosionEffect.innerHTML = '<span class="explosion"></span>';
+    setTimeout(() => {
+      damagedTile?.appendChild(explosionEffect);
+    }, 200);
+    setTimeout(() => {
+      damagedTile?.removeChild(explosionEffect);
+    }, 1300);
     ship && onShipClick(ship);
   };
 
@@ -47,6 +58,7 @@ const Tile = ({
   return (
     <div key={`x${x}y${y}`}>
       <div
+        id={tileId}
         className={clsx(
           "after:content-[''] after:p-[50%] after:block",
           "relative w-full text-center",

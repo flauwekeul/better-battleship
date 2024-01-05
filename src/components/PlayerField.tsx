@@ -30,6 +30,7 @@ const PlayerField = ({ playerId }: Props) => {
   const gameContext = useGameContext();
   const [activeShip, setActiveShip] = useState<Ship | null>(null);
   const [proposedShip, setProposedShip] = useState<Ship | null>(null);
+  const boardName = `board${playerId}`;
 
   const player = useMemo(() => {
     return playerId === "player1" ? gameContext.player1 : gameContext.player2;
@@ -69,6 +70,7 @@ const PlayerField = ({ playerId }: Props) => {
         <div className="grid grid-cols-10" key={y}>
           {row.map((position) => (
             <Tile
+              tileId={`x${position.x}y${position.y}${boardName}`}
               key={`x${position.x}y${position.y}`}
               position={position}
               onTileClick={onTileClick}
