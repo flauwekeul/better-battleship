@@ -1,35 +1,34 @@
+import { useMemo } from "react";
 import { Player, Position, Ship } from "../types/entities";
 import clsx from "clsx";
-
-const isShipAtPosition = (
-  position: Position,
-  ships: Ship[]
-): { hasShip: boolean; ship?: Ship } => {
-  const ship = ships.find((ship) => {
-    return ship.positions.find((coordinate) => {
-      return coordinate.x === position.x && coordinate.y === position.y;
-    });
-  });
-
-  return ship ? { hasShip: true, ship } : { hasShip: false };
-};
+import { getShipAtPosition } from "../domain/functions";
 
 const Tile = ({
   position,
   onTileClick,
+  onShipClick,
   player,
+  isShipMoveableHere,
 }: {
   player: Player;
   position: Position;
   onTileClick: (position: Position) => void;
+  onShipClick: (ship: Ship) => void;
+  isShipMoveableHere: boolean;
 }) => {
   const { x, y } = position;
+  const ship = useMemo(() => {
+    return getShipAtPosition(position, player.ships);
+  }, [player.ships, position]);
 
-  const onShipClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+  const onShipClickInternal = (
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => {
     event.preventDefault();
     event.stopPropagation();
 
     console.log("ship clicked!");
+    ship && onShipClick(ship);
   };
 
   return (
@@ -45,10 +44,13 @@ const Tile = ({
         )}
         onClick={() => onTileClick(position)}
       >
-        {isShipAtPosition(position, player.ships).hasShip && (
+        {isShipMoveableHere && (
+          <div className="absolute w-full h-full bg-green-400 opacity-50" />
+        )}
+        {ship && (
           <div
             className="absolute w-full h-full bg-gray-400"
-            onClick={onShipClick}
+            onClick={onShipClickInternal}
           >
             ship
           </div>
