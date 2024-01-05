@@ -1,7 +1,28 @@
 import { useMemo } from "react";
 import { Player, Position, Ship } from "../types/entities";
 import clsx from "clsx";
-import { getShipAtPosition, isShipPositionHere } from "../domain/functions";
+import {
+  getShipAtPosition,
+  isPositionsHorizontal,
+  isShipPositionHere,
+} from "../domain/functions";
+
+const getPartOfShip = (position: Position, ship: Ship) => {
+  if (isPositionsHorizontal(ship.positions)) {
+    const isFirstPart = ship.positions[0].x === position.x;
+    if (isFirstPart) {
+      return "first part";
+    }
+
+    const isLastPart =
+      ship.positions[ship.positions.length - 1].x === position.x;
+    if (isLastPart) {
+      return "last part";
+    }
+
+    return "middle part";
+  }
+};
 
 const Tile = ({
   tileId,
@@ -103,7 +124,7 @@ const Tile = ({
             className="absolute w-full h-full bg-gray-400"
             onClick={onShipClickInternal}
           >
-            ship
+            {getPartOfShip(position, ship)}
           </div>
         )}
       </div>

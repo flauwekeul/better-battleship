@@ -50,7 +50,7 @@ export const isShipMovableHere = (
   return false;
 };
 
-const isPositionsHorizontal = (positions: Position[]): boolean => {
+export const isPositionsHorizontal = (positions: Position[]): boolean => {
   return positions[0].y === positions[1].y;
 };
 
