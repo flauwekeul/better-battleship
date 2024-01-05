@@ -1,8 +1,13 @@
 import "./App.css";
 import Layout from "./Layout";
+import { GameContextWrapper } from "./context/context";
 
 function App() {
-  return <Layout />;
+  return (
+    <GameContextWrapper>
+      <Layout />
+    </GameContextWrapper>
+  );
 }
 
 export default App;
