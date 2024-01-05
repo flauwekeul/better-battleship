@@ -11,7 +11,6 @@ export const gameReducer = (state: Game, action: Action) => {
       };
 
     case "setProposedShip":
-      console.log("should set propposed ship", action.ship);
       return {
         ...state,
         proposedShip: action.ship,

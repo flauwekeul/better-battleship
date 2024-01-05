@@ -13,12 +13,12 @@ export type Move<T extends Ship = Ship> = {
 
 export type SetCurrentInteractiveShip = {
   type: "setCurrentInteractiveShip";
-  ship: Ship;
+  ship: Ship | null;
 };
 
 export type SetProposedShip = {
   type: "setProposedShip";
-  ship: Ship;
+  ship: Ship | null;
 };
 
 export type Action = Fire | Move | SetCurrentInteractiveShip | SetProposedShip;

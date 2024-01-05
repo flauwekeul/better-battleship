@@ -16,6 +16,10 @@ const Layout = () => {
     }
   };
 
+  const onCancelMoveship = () => {
+    dispatch({ type: "setCurrentInteractiveShip", ship: null });
+  };
+
   return (
     <div className="h-screen overflow-hidden">
       <div className="h-full grid grid-rows-[64px_1fr_64px] gap-2">
@@ -31,6 +35,12 @@ const Layout = () => {
                   onClick={onConfirmMoveship}
                 >
                   Ok
+                </button>
+                <button
+                  className="ml-2 px-5 py-2 font-bold border rounded-md bg-green-300"
+                  onClick={onCancelMoveship}
+                >
+                  Cancel
                 </button>
               </p>
             </div>

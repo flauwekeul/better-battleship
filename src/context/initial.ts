@@ -1,4 +1,4 @@
-import { Game, PatrolBoat, Player } from "../types/entities";
+import { Game, PatrolBoat, Player, Submarine } from "../types/entities";
 
 export const INITIAL_GAME: Game = {
   currentInteractiveShip: null,
@@ -25,6 +25,16 @@ export const INITIAL_GAME: Game = {
         type: "patrolBoat",
         id: "boat2",
       } as PatrolBoat,
+      {
+        positions: [
+          { x: 7, y: 7 },
+          { x: 8, y: 7 },
+          { x: 9, y: 7 },
+        ],
+        hitPoints: 3,
+        type: "submarine",
+        id: "boat3",
+      } as Submarine,
     ],
   } as Player,
   player2: {

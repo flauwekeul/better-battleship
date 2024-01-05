@@ -36,7 +36,6 @@ export const isShipMovableHere = (
   ) as Ship[];
 
   if (!!getShipAtPosition(position, shipsWithoutCurrentShip)) {
-    console.log("damn ship already here bro");
     return false;
   }
 
