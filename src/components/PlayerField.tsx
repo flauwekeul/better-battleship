@@ -1,11 +1,10 @@
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Position, PlayerId, Ship } from "../types/entities";
 import { useGameContext } from "../context/context";
 import Tile from "./Tile";
 import {
   getShipPositionsInsideBounds,
   isShipMovableHere,
-  isShipPositionHere,
 } from "../domain/functions";
 
 type Props = {
@@ -40,6 +39,10 @@ const PlayerField = ({ playerId }: Props) => {
     return createGrid(10, 10);
   }, []);
 
+  useEffect(() => {
+    setProposedShip(null);
+  }, [activeShip]);
+
   const onTileClick = (position: Position) => {
     console.log("onTileClick", position, playerId);
   };
@@ -48,21 +51,27 @@ const PlayerField = ({ playerId }: Props) => {
     setActiveShip(ship);
   };
 
-  const onMoveAreaClick = (position: Position) => {
-    console.log("move here?", position);
-    if (activeShip) {
-      const positions = getShipPositionsInsideBounds(
-        position,
-        activeShip,
-        player.ships
-      );
+  const onMoveAreaClick = useCallback(
+    (position: Position) => {
+      if (activeShip) {
+        const positions = getShipPositionsInsideBounds(
+          { x: position.x, y: position.y },
+          activeShip,
+          player.ships,
+          proposedShip
+        );
 
-      if (positions !== null) {
-        console.log("we got a proposed ship");
-        setProposedShip({ ...activeShip, positions });
+        if (positions !== null) {
+          setProposedShip({
+            type: activeShip.type,
+            hitPoints: activeShip.hitPoints,
+            positions,
+          });
+        }
       }
-    }
-  };
+    },
+    [proposedShip, activeShip, player.ships]
+  );
 
   return (
     <div className="relative bg-white p-4">

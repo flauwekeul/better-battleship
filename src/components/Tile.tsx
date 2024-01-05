@@ -13,7 +13,7 @@ const Tile = ({
   proposedShip,
   isShipMoveableHere,
 }: {
-  tileId: string,
+  tileId: string;
   player: Player;
   position: Position;
   onTileClick: (position: Position) => void;
@@ -37,17 +37,6 @@ const Tile = ({
   ) => {
     event.preventDefault();
     event.stopPropagation();
-
-    console.log("ship clicked!");
-    var damagedTile = document.getElementById(tileId);
-    const explosionEffect: HTMLSpanElement = document.createElement("span");
-    explosionEffect.innerHTML = '<span class="explosion"></span>';
-    setTimeout(() => {
-      damagedTile?.appendChild(explosionEffect);
-    }, 200);
-    setTimeout(() => {
-      damagedTile?.removeChild(explosionEffect);
-    }, 1300);
     ship && onShipClick(ship);
   };
 
@@ -58,6 +47,20 @@ const Tile = ({
     event.stopPropagation();
 
     onMoveAreaClick(position);
+  };
+
+  const onTileClickInternal = () => {
+    var damagedTile = document.getElementById(tileId);
+    const explosionEffect: HTMLSpanElement = document.createElement("span");
+    explosionEffect.innerHTML = '<span class="explosion"></span>';
+    setTimeout(() => {
+      damagedTile?.appendChild(explosionEffect);
+    }, 200);
+    setTimeout(() => {
+      damagedTile?.removeChild(explosionEffect);
+    }, 1300);
+
+    onTileClick(position);
   };
 
   const isShipShown =
@@ -77,7 +80,7 @@ const Tile = ({
               x % 2 === (y % 2 === 0 ? 1 : 0) && !isShipMoveableHere,
           }
         )}
-        onClick={() => onTileClick(position)}
+        onClick={onTileClickInternal}
       >
         {isShipMoveableHere && (
           <div

@@ -27,6 +27,10 @@ export const isShipMovableHere = (
   position: Position,
   allShips: Ship[]
 ): boolean => {
+  if (position.x < 0 || position.y < 0 || position.x > 9 || position.y > 9) {
+    return false;
+  }
+
   const shipsWithoutCurrentShip = allShips.filter(
     (s) => s.type !== ship.type
   ) as Ship[];
@@ -57,19 +61,35 @@ const getShipPositionsInsideBoundsWithDirection = (
   ships: Ship[],
   direction: Direction
 ): Position[] | null => {
-  if (direction === "left") {
-    // get all positions to the left of the first position
-    const positions = [position];
+  // get all positions to the left of the first position
+  const positions = [position];
+  let nextPosition: Position | null = null;
 
-    for (let i = 1; i < ship.positions.length; i++) {
-      const nextPosition = {
+  for (let i = 1; i < ship.positions.length; i++) {
+    if (direction === "left") {
+      nextPosition = {
         x: position.x - i,
         y: position.y,
       };
+    } else if (direction === "up") {
+      nextPosition = {
+        x: position.x,
+        y: position.y - i,
+      };
+    } else if (direction === "down") {
+      nextPosition = {
+        x: position.x,
+        y: position.y + i,
+      };
+    } else if (direction === "right") {
+      nextPosition = {
+        x: position.x + i,
+        y: position.y,
+      };
+    }
 
-      if (isShipMovableHere(ship, nextPosition, ships)) {
-        positions.push(nextPosition);
-      }
+    if (nextPosition && isShipMovableHere(ship, nextPosition, ships)) {
+      positions.push(nextPosition);
     }
 
     if (positions.length === ship.positions.length) {
@@ -80,7 +100,11 @@ const getShipPositionsInsideBoundsWithDirection = (
   return null;
 };
 
-const DIRECTIONS: Direction[] = ["up", "right", "down", "left"];
+const isSamePosition = (position1: Position, position2: Position): boolean => {
+  return position1.x === position2.x && position1.y === position2.y;
+};
+
+const DIRECTIONS: Direction[] = ["down", "right", "up", "left"];
 
 const getNextDirection = (direction: Direction): Direction => {
   const index = DIRECTIONS.indexOf(direction);
@@ -88,39 +112,43 @@ const getNextDirection = (direction: Direction): Direction => {
 };
 
 const getProposedInitialDirection = (
-  position: Position,
   ship: Ship
 ): "left" | "right" | "up" | "down" => {
   const isHorizontal = isPositionsHorizontal(ship.positions);
 
   if (isHorizontal) {
-    // we want to suggest positions left first if x is further out
-    if (position.x > ship.positions[0].x) {
-      // try left first
-      return "left";
-    } else {
-      // try right first
-      return "right";
+    return "left";
+  }
+
+  return "up";
+};
+
+const getProposedInitialDirectionByShip = (ship: Ship) => {
+  if (ship.positions[0].x !== ship.positions[1].x) {
+    if (ship.positions[0].x > ship.positions[1].x) {
+      return getNextDirection("left");
     }
+    return getNextDirection("right");
   } else {
-    // we want to suggest positions up first if y is further out
-    if (position.y > ship.positions[0].y) {
-      // try up first
-      return "up";
-    } else {
-      // try down first
-      return "down";
+    if (ship.positions[0].y > ship.positions[1].y) {
+      return getNextDirection("up");
     }
+
+    return getNextDirection("down");
   }
 };
 
 export const getShipPositionsInsideBounds = (
   position: Position,
   ship: Ship,
-  ships: Ship[]
+  ships: Ship[],
+  proposedShip: Ship | null
 ): Position[] | null => {
-  let currentDirection = getProposedInitialDirection(position, ship);
-  console.log("trying direction", currentDirection);
+  let currentDirection =
+    proposedShip && isSamePosition(proposedShip.positions[0], position)
+      ? getProposedInitialDirectionByShip(proposedShip)
+      : getProposedInitialDirection(ship);
+
   const shipsWithoutCurrentShip = ships.filter(
     (s) => s.type !== ship.type
   ) as Ship[];
@@ -134,6 +162,7 @@ export const getShipPositionsInsideBounds = (
     );
 
     if (positions) {
+      console.log("[success direction]", currentDirection);
       return positions;
     }
 
