@@ -7,7 +7,6 @@ const Layout = () => {
 
   const onConfirmMoveship = () => {
     if (currentInteractiveShip && proposedShip?.positions) {
-      console.log("shoud move");
       dispatch({
         type: "move",
         ship: currentInteractiveShip,
