@@ -71,7 +71,10 @@ const Tile = ({
   };
 
   const onTileClickInternal = () => {
-    explodeTile();
+    if (player.id === "player2") {
+      explodeTile();
+    }
+
     onTileClick(position);
   };
 

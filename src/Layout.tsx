@@ -21,12 +21,12 @@ const Layout = () => {
 
   return (
     <div className="h-screen overflow-hidden">
-      <div className="h-full grid grid-rows-[64px_1fr_64px] gap-2">
-        <div className="relative p-4 text-center">
-          <h2 className="text-2xl">Better Battleship</h2>
+      <div className="h-full grid grid-rows-[92px_1fr_64px] gap-2">
+        <div className="relative p-4 border-b text-center">
+          <h1 className="mt-3 text-4xl">Better Battleship</h1>
 
           {!!proposedShip && (
-            <div className="top-0 absolute bg-green-100 py-1 px-5">
+            <div className="bottom-0 absolute bg-green-100 py-1 px-5">
               <p>
                 Do you want to move this ship?
                 <button
