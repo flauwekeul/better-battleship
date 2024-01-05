@@ -35,6 +35,12 @@ export type PatrolBoat = {
 
 export type Ship = Carrier | Battleship | Destroyer | Submarine | PatrolBoat
 
+export type ShipLength = 5 | 4 | 3 | 2
+
+export type Orientation = 'horizontal' | 'vertical'
+
+export type Direction = 'up' | 'down' | 'left' | 'right'
+
 export type Player = {
   id: PlayerId
   ships: Ship[]
