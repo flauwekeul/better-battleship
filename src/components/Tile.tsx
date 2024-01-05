@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { Player, Position, Ship } from "../types/entities";
 import clsx from "clsx";
-import { getShipAtPosition } from "../domain/functions";
+import { getShipAtPosition, isShipPositionHere } from "../domain/functions";
 
 const Tile = ({
   tileId,
@@ -10,8 +10,8 @@ const Tile = ({
   onShipClick,
   onMoveAreaClick,
   player,
+  proposedShip,
   isShipMoveableHere,
-  isProposedShipHere,
 }: {
   tileId: string,
   player: Player;
@@ -20,12 +20,17 @@ const Tile = ({
   onShipClick: (ship: Ship) => void;
   onMoveAreaClick: (position: Position) => void;
   isShipMoveableHere: boolean;
-  isProposedShipHere: boolean;
+  proposedShip: Ship | null;
 }) => {
   const { x, y } = position;
+
   const ship = useMemo(() => {
     return getShipAtPosition(position, player.ships);
   }, [player.ships, position]);
+
+  const isProposedShipHere = proposedShip
+    ? isShipPositionHere(position, proposedShip)
+    : false;
 
   const onShipClickInternal = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>
@@ -55,6 +60,9 @@ const Tile = ({
     onMoveAreaClick(position);
   };
 
+  const isShipShown =
+    !!ship && (!proposedShip || (!!proposedShip && !isShipMoveableHere));
+
   return (
     <div key={`x${x}y${y}`}>
       <div
@@ -73,7 +81,7 @@ const Tile = ({
       >
         {isShipMoveableHere && (
           <div
-            className="absolute w-full h-full bg-green-400 opacity-50"
+            className="absolute w-full h-full bg-green-400 opacity-50 z-10"
             onClick={onMoveAreaClickInternal}
           />
         )}
@@ -82,7 +90,7 @@ const Tile = ({
           <div className="absolute w-full h-full bg-gray-400" />
         )}
 
-        {ship && (
+        {isShipShown && (
           <div
             className="absolute w-full h-full bg-gray-400"
             onClick={onShipClickInternal}
@@ -90,10 +98,6 @@ const Tile = ({
             ship
           </div>
         )}
-
-        <span className="pointer-events-none hidden absolute text-xs">
-          {x}, {y}
-        </span>
       </div>
     </div>
   );

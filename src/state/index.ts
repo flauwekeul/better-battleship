@@ -1,8 +1,8 @@
-import { Game, Player, PlayerId, Ship } from '../types/entities'
+import { Game, Player, PlayerId, Ship } from "../types/entities";
 
 const randomShips = (): Ship[] => [
   {
-    type: 'carrier',
+    type: "carrier",
     hitPoints: 5,
     positions: [
       { x: 4, y: 9 },
@@ -13,7 +13,7 @@ const randomShips = (): Ship[] => [
     ],
   },
   {
-    type: 'battleship',
+    type: "battleship",
     hitPoints: 4,
     positions: [
       { x: 0, y: 0 },
@@ -23,7 +23,7 @@ const randomShips = (): Ship[] => [
     ],
   },
   {
-    type: 'destroyer',
+    type: "destroyer",
     hitPoints: 3,
     positions: [
       { x: 3, y: 2 },
@@ -32,7 +32,7 @@ const randomShips = (): Ship[] => [
     ],
   },
   {
-    type: 'submarine',
+    type: "submarine",
     hitPoints: 3,
     positions: [
       { x: 7, y: 4 },
@@ -41,22 +41,22 @@ const randomShips = (): Ship[] => [
     ],
   },
   {
-    type: 'patrolBoat',
+    type: "patrolBoat",
     hitPoints: 2,
     positions: [
       { x: 0, y: 6 },
       { x: 1, y: 6 },
     ],
   },
-]
+];
 
 const createPlayer = (id: PlayerId, ships: Ship[]): Player => ({
   id,
   ships,
-})
+});
 
 export const initialState: Game = {
-  currentPlayer: 'player1',
-  player1: createPlayer('player1', randomShips()),
-  player2: createPlayer('player2', randomShips()),
-}
+  currentPlayer: "player1",
+  player1: createPlayer("player1", randomShips()),
+  player2: createPlayer("player2", randomShips()),
+};

@@ -77,11 +77,7 @@ const PlayerField = ({ playerId }: Props) => {
               onShipClick={onShipClick}
               onMoveAreaClick={onMoveAreaClick}
               player={player}
-              isProposedShipHere={
-                proposedShip
-                  ? isShipPositionHere(position, proposedShip)
-                  : false
-              }
+              proposedShip={proposedShip}
               isShipMoveableHere={
                 activeShip
                   ? isShipMovableHere(activeShip, position, player.ships)
