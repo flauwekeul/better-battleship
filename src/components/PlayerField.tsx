@@ -2,7 +2,11 @@ import { useMemo, useState } from "react";
 import { Position, PlayerId, Ship } from "../types/entities";
 import { useGameContext } from "../context/context";
 import Tile from "./Tile";
-import { isShipMovableHere } from "../domain/functions";
+import {
+  getShipPositionsInsideBounds,
+  isShipMovableHere,
+  isShipPositionHere,
+} from "../domain/functions";
 
 type Props = {
   playerId: PlayerId;
@@ -25,6 +29,7 @@ const createGrid = (x: number, y: number): Array<Array<Position>> => {
 const PlayerField = ({ playerId }: Props) => {
   const gameContext = useGameContext();
   const [activeShip, setActiveShip] = useState<Ship | null>(null);
+  const [proposedShip, setProposedShip] = useState<Ship | null>(null);
 
   const player = useMemo(() => {
     return playerId === "player1" ? gameContext.player1 : gameContext.player2;
@@ -42,6 +47,22 @@ const PlayerField = ({ playerId }: Props) => {
     setActiveShip(ship);
   };
 
+  const onMoveAreaClick = (position: Position) => {
+    console.log("move here?", position);
+    if (activeShip) {
+      const positions = getShipPositionsInsideBounds(
+        position,
+        activeShip,
+        player.ships
+      );
+
+      if (positions !== null) {
+        console.log("we got a proposed ship");
+        setProposedShip({ ...activeShip, positions });
+      }
+    }
+  };
+
   return (
     <div className="relative bg-white p-4">
       {grid.map((row, y) => (
@@ -52,7 +73,13 @@ const PlayerField = ({ playerId }: Props) => {
               position={position}
               onTileClick={onTileClick}
               onShipClick={onShipClick}
+              onMoveAreaClick={onMoveAreaClick}
               player={player}
+              isProposedShipHere={
+                proposedShip
+                  ? isShipPositionHere(position, proposedShip)
+                  : false
+              }
               isShipMoveableHere={
                 activeShip
                   ? isShipMovableHere(activeShip, position, player.ships)
