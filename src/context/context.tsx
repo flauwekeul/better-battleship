@@ -16,8 +16,14 @@ export const GameContextWrapper = ({
   children: React.ReactNode;
 }) => {
   const [game, dispatch] = useReducer(gameReducer, INITIAL_GAME);
+
   return (
-    <GameContext.Provider value={{ ...game, dispatch }}>
+    <GameContext.Provider
+      value={{
+        ...game,
+        dispatch,
+      }}
+    >
       {children}
     </GameContext.Provider>
   );

@@ -2,6 +2,7 @@ import { Game, Player, PlayerId, Ship } from "../types/entities";
 
 const randomShips = (): Ship[] => [
   {
+    id: "boat1",
     type: "carrier",
     hitPoints: 5,
     positions: [
@@ -13,6 +14,7 @@ const randomShips = (): Ship[] => [
     ],
   },
   {
+    id: "boat2",
     type: "battleship",
     hitPoints: 4,
     positions: [
@@ -23,6 +25,7 @@ const randomShips = (): Ship[] => [
     ],
   },
   {
+    id: "boat",
     type: "destroyer",
     hitPoints: 3,
     positions: [
@@ -32,6 +35,7 @@ const randomShips = (): Ship[] => [
     ],
   },
   {
+    id: "boat3",
     type: "submarine",
     hitPoints: 3,
     positions: [
@@ -41,6 +45,7 @@ const randomShips = (): Ship[] => [
     ],
   },
   {
+    id: "boat4",
     type: "patrolBoat",
     hitPoints: 2,
     positions: [
@@ -56,6 +61,8 @@ const createPlayer = (id: PlayerId, ships: Ship[]): Player => ({
 });
 
 export const initialState: Game = {
+  currentInteractiveShip: null,
+  proposedShip: null,
   currentPlayer: "player1",
   player1: createPlayer("player1", randomShips()),
   player2: createPlayer("player2", randomShips()),

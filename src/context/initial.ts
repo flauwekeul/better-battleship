@@ -1,6 +1,8 @@
 import { Game, PatrolBoat, Player } from "../types/entities";
 
 export const INITIAL_GAME: Game = {
+  currentInteractiveShip: null,
+  proposedShip: null,
   currentPlayer: "player1",
   player1: {
     id: "player1",
@@ -12,6 +14,7 @@ export const INITIAL_GAME: Game = {
         ],
         hitPoints: 2,
         type: "patrolBoat",
+        id: "boat1",
       } as PatrolBoat,
       {
         positions: [
@@ -20,6 +23,7 @@ export const INITIAL_GAME: Game = {
         ],
         hitPoints: 2,
         type: "patrolBoat",
+        id: "boat2",
       } as PatrolBoat,
     ],
   } as Player,

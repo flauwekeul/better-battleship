@@ -54,9 +54,6 @@ const Tile = ({
     onTileClick(position);
   };
 
-  const isShipShown =
-    !!ship && (!proposedShip || (!!proposedShip && !isShipMoveableHere));
-
   const explodeTile = () => {
     const damagedTile = document.getElementById(tileId);
     const explosionEffect: HTMLSpanElement = document.createElement("span");
@@ -68,6 +65,11 @@ const Tile = ({
       damagedTile?.removeChild(explosionEffect);
     }, 1300);
   };
+
+  const isShipShown =
+    !!ship &&
+    (!proposedShip ||
+      (!!proposedShip && !isShipMoveableHere && proposedShip.id !== ship.id));
 
   return (
     <div key={`x${x}y${y}`}>
